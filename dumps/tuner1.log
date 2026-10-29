@@ -1,0 +1,14 @@
+13:17:17 ets Jul 29 2019 12:21:46
+13:17:17 
+13:17:17 rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+13:17:17 configsip: 0, SPIWP:0xee
+13:17:17 clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+13:17:17 mode:DIO, clock div:2
+13:17:17 load:0x3fff0030,len:4688
+13:17:17 load:0x40078000,len:15504
+13:17:17 load:0x40080400,len:4
+13:17:17 load:0x40080404,len:3196
+13:17:17 entry 0x400805a4
+13:17:18 tuner poll; press presets
+13:17:18 0x60: 00 00 02 00 00 pll=0 -> hi -0.225 MHz / lo 0.225 MHz
+13:17:18 r0A=0000 r03=481E r07=4012 band=3 space=2 READCHAN=0 CHAN=288 -> 79.400 MHz (tuned 65.000)
