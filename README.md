@@ -25,13 +25,13 @@ The commentary radio handed out at the 2026 US Grand Prix (COTA) has two preset 
 | IC4 | 5KZ0 (SOT-23) | Probably an LDO regulator (unconfirmed) |
 | SAW, L2, L3, C5 | | Footprints appear unpopulated (shared PCB design) |
 
-Power is 2xAA. Volume is a 50 kOhm pot with switch. The back pads (DATA / CLK / GND / VCC) were not traced.
+Power is 2xAA. Volume is a 50 kOhm pot with switch. The four through-hole pads on the back (DATA / CLK / GND / VCC) are the I2C bus: DATA = SDA and CLK = SCL, shared by the EEPROM and the RDA5807M tuner. They are the access point used here (see Method).
 
 ## Method
 
 ### 1. EEPROM dump
 
-ESP32 (classic, GPIO21 SDA / GPIO22 SCL) wired in-circuit to IC5 pins 5 (SDA), 6 (SCL) and 4 (GND), **no VCC** (the radio was powered from its own batteries and switched on). Read-only sketch in [`eeprom-dump/`](eeprom-dump/). Two dumps matched, so the MCU wasn't interfering with the bus.
+ESP32 (classic, GPIO21 SDA / GPIO22 SCL) wired to the back pads, not to the chips: DATA -> GPIO21, CLK -> GPIO22, GND -> GND, **VCC pad left unconnected** (the radio was powered from its own batteries and switched on). Because the pads are the I2C bus shared by the EEPROM and tuner, this reads the EEPROM and also reaches the tuner, with no soldering to IC pins. Read-only sketch in [`eeprom-dump/`](eeprom-dump/). Two dumps matched, so the MCU wasn't interfering with the bus.
 
 I2C scan found 0x10, 0x11 (RDA5807M), 0x50 (EEPROM) and 0x60. 0x60 returns all zeros and looks unused.
 
@@ -69,7 +69,7 @@ The header `A5 1E 28 01 02 00 40 01` is not decoded. A preset count of 2 and a m
 
 ### 3. Live tuner readback (confirmation)
 
-Sketch in [`tuner-read/`](tuner-read/) polls RDA5807M registers 0x03, 0x07 and 0x0A over I2C (read-only) while presets are changed. Logs are in [`dumps/`](dumps/).
+Sketch in [`tuner-read/`](tuner-read/) polls RDA5807M registers 0x03, 0x07 and 0x0A over the same pads (read-only, the ESP32 acts as an I2C master and reads them) while presets are changed. This is active polling, not passive sniffing of the MCU's writes. Passive sniffing of the tuner commands with a logic analyzer on the same pads would also work but was not needed. Logs are in [`dumps/`](dumps/).
 
 - Reg 0x03 = `0x481E` -> CHAN 288, band `11`, spacing `10` (50 kHz) -> 64.4 MHz
 - Reg 0x03 = `0x459E` -> CHAN 278, band `11`, spacing `10` -> 63.9 MHz
@@ -118,4 +118,4 @@ EXIF metadata was stripped from the photos.
 
 - Confirm 63.9 / 64.4 MHz on-air with an SDR at the next race.
 - Meaning of the EEPROM header bytes and the 74.00 MHz value.
-- What the back pads (DATA / CLK / GND / VCC) connect to.
+- Whether the VCC pad can safely power the board from an external supply (not tested).
