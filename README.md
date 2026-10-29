@@ -86,13 +86,33 @@ Note: reg 0x0A (READCHAN) reads 0 right after power-up or retune, before the tun
 - Bits 1:0 = SPACE: `00` 100 kHz, `01` 200 kHz, `10` 50 kHz, `11` 25 kHz
 - Freq = band start + CHAN x spacing
 
+## Photos
+
+Board "DS-712SF 26-03" with the metal shield area at the lower half (RDA5807M, SAW footprint, 8002A amp).
+
+| | |
+|---|---|
+| ![Front](images/01-front-overview.jpg) | ![Back](images/02-back.jpg) |
+| Front overview: LCD, MCU, IC5 EEPROM, UP/DOWN buttons, volume pot | Back: DATA / CLK / GND / VCC pads, headphone jack, battery contacts |
+
+More close-ups in [`images/`](images/):
+
+- [`03-mcu-eeprom-lcd.jpg`](images/03-mcu-eeprom-lcd.jpg): Megawin MG82F6D17AL20 MCU, IC5 (ATXBL 602 / 24C02BN), IC4 (5KZ0)
+- [`04-eeprom-ic5.jpg`](images/04-eeprom-ic5.jpg): IC5 close-up
+- [`05-rda5807m-crystal-ldo.jpg`](images/05-rda5807m-crystal-ldo.jpg): IC2 (5807M TPL24), 32.768 kHz crystal JT1, UP/DOWN buttons
+- [`06-eeprom-amp-saw.jpg`](images/06-eeprom-amp-saw.jpg): IC5, 8002A amp, unpopulated SAW/L2/L3/C5
+- [`07-front-closeup.jpg`](images/07-front-closeup.jpg): front, closer (shows the A50K pot)
+- [`08-amp-saw-rf-section.jpg`](images/08-amp-saw-rf-section.jpg): IC3 (8002A) and the unpopulated SAW area
+
+EXIF metadata was stripped from the photos.
+
 ## Repo layout
 
 - `eeprom-dump/` PlatformIO project: scan I2C and dump the 24C02
 - `tuner-read/` PlatformIO project: poll RDA5807M registers
 - `dumps/` EEPROM dump and serial logs
 - `cap.py` serial capture helper (resets the ESP32 and logs with timestamps)
-- `images/` board photos (to add)
+- `images/` board photos
 
 ## Open questions
 
